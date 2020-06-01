@@ -1,4 +1,3 @@
-'use strict'
 import React, { Component } from "react"
 import $ from 'jquery';
 import logo from './logo.svg';
@@ -7,7 +6,7 @@ import './App.css';
 
 //------------------------SPEECH RECOGNITION-----------------------------
 
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = new SpeechRecognition()
 
 recognition.continous = true
@@ -23,6 +22,7 @@ class Speech extends Component {
     super()
     this.state = {
       listening: false,
+      showlistening: "Power Off",
       bgcolor:'#282c34'
     }
     this.toggleListen = this.toggleListen.bind(this)
@@ -56,7 +56,7 @@ class Speech extends Component {
     recognition.onstart = () => {
       console.log("Listening!")
       this.setState({
-        bgcolor:'#282c34'
+        bgcolor:'#282c34',
       })
     }
 
@@ -69,10 +69,11 @@ class Speech extends Component {
         else finalTranscript += transcript;
       }
       console.log(finalTranscript)
-      if (finalTranscript === "開始煮飯"){
+      if (finalTranscript === "開始煮飯" || finalTranscript === "打開電源"){
         console.log("指令成功！")
         this.setState({
-          bgcolor:'#006400'
+          bgcolor:'#006400',
+          showlistening:"Power On"
         })
         $.ajax({
           url:"https://maker.ifttt.com/trigger/ricecookeron/with/key/dyMeTmyKz4_uQNNPyqZABx",
@@ -80,10 +81,11 @@ class Speech extends Component {
           success:function(result){alert(result)}
         })
       }
-      else if(finalTranscript === "關掉電源"){
+      else if(finalTranscript === "關掉電源" || finalTranscript === "關掉"){
         console.log("指令成功！")
         this.setState({
-          bgcolor:'#006400'
+          bgcolor:'#006400',
+          showlistening:"Power Off"
         })
         $.ajax({
           url:"https://maker.ifttt.com/trigger/ricecookeroff/with/key/dyMeTmyKz4_uQNNPyqZABx",
@@ -119,12 +121,13 @@ class Speech extends Component {
 
   render() {
     return (
-        <div style={container}>
+        <div>
           <header className="App-header" style={{backgroundColor: this.state.bgcolor}}>
-            <button id='microphone-btn' style={button} onClick={this.toggleListen}>
+            <div id='listening' className='listening' style={{position: "absolute", top: 10, left: 10}}>{this.state.showlistening}</div>
+            <button id='microphone-btn' className="button" onClick={this.toggleListen}>
               <img src={logo} className="App-logo" alt="logo"/>
             </button>
-            <div id='final' style={final}></div>
+            <div id='final' className="final"></div>
           </header>
         </div>
     )
@@ -134,31 +137,5 @@ class Speech extends Component {
 export default Speech
 
 
-//-------------------------CSS------------------------------------
-
-const styles = {
-  container: {
-    flexDirection: 'column',
-    alignItems: 'center',
-    textAlign: 'center'
-  },
-  body: {
-    background: 'black'
-  },
-  button: {
-    background: 'transparent',
-    borderWidth:0
-  },
-  final: {
-    color: 'white',
-    borderWidth:0,
-    padding: '1em',
-    margin: '1em',
-    width: '300px',
-    textAlign: 'center'
-  }
-}
-
-const { container, button, final, body} = styles
 
 
