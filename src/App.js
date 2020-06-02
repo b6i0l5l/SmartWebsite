@@ -1,4 +1,5 @@
-import React, { Component } from "react"
+import React, { Component } from "react";
+import MicIcon from '@material-ui/icons/Mic';
 import $ from 'jquery';
 import logo from './logo.svg';
 import './App.css';
@@ -23,6 +24,7 @@ class Speech extends Component {
     this.state = {
       listening: false,
       showlistening: "Power Off",
+      microphone:"red",
       bgcolor:'#282c34'
     }
     this.toggleListen = this.toggleListen.bind(this)
@@ -49,6 +51,9 @@ class Speech extends Component {
     } else {
       recognition.stop()
       recognition.onend = () => {
+        this.setState({
+          microphone:"red"
+        })
         console.log("Stopped listening per click")
       }
     }
@@ -57,6 +62,7 @@ class Speech extends Component {
       console.log("Listening!")
       this.setState({
         bgcolor:'#282c34',
+        microphone:"green"
       })
     }
 
@@ -69,7 +75,7 @@ class Speech extends Component {
         else finalTranscript += transcript;
       }
       console.log(finalTranscript)
-      if (finalTranscript === "開始煮飯" || finalTranscript === "打開電源"){
+      if (finalTranscript === "開啟電源" || finalTranscript === "打開電源"){
         console.log("指令成功！")
         this.setState({
           bgcolor:'#006400',
@@ -127,9 +133,19 @@ class Speech extends Component {
             <button id='microphone-btn' className="button" onClick={this.toggleListen}>
               <img src={logo} className="App-logo" alt="logo"/>
             </button>
+            <div className='memo'>
+              <p >你可以說:</p>
+              <p>開：「打開電源」</p>
+              <p>關：「關掉電源」</p>
+            </div>
             <div id='final' className="final"></div>
           </header>
+
+          <MicIcon fontSize="large" style={{position:"absolute", color:this.state.microphone, top:10, right:10}}/>
+
+
         </div>
+
     )
   }
 }

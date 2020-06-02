@@ -26,7 +26,15 @@
 .App-link {
   color: #61dafb;
 }
-
+.memo{
+  position: absolute;
+  top:40px;
+  right:270px;
+  width: 250px;
+  height:200px;
+  padding: 10px;
+  color:white;
+}
 
 .button {
   background-color: transparent;
