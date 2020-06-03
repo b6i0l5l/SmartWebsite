@@ -30,7 +30,7 @@
   position: absolute;
   top:40px;
   right:270px;
-  width: 250px;
+  width: 300px;
   height:200px;
   padding: 10px;
   color:white;
@@ -49,6 +49,7 @@
   width: 300px;
   align-items: center;
   text-align: center;
+  font-size: 50px;
 }
 
 .listening {

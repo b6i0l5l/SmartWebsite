@@ -75,7 +75,7 @@ class Speech extends Component {
         else finalTranscript += transcript;
       }
       console.log(finalTranscript)
-      if (finalTranscript === "開啟電源" || finalTranscript === "打開電源"){
+      if (finalTranscript === "打開電源"){
         console.log("指令成功！")
         this.setState({
           bgcolor:'#006400',
@@ -87,7 +87,7 @@ class Speech extends Component {
           success:function(result){alert(result)}
         })
       }
-      else if(finalTranscript === "關掉電源" || finalTranscript === "關掉"){
+      else if(finalTranscript === "關掉電源"){
         console.log("指令成功！")
         this.setState({
           bgcolor:'#006400',
@@ -135,15 +135,12 @@ class Speech extends Component {
             </button>
             <div className='memo'>
               <p >你可以說:</p>
-              <p>開：「打開電源」</p>
-              <p>關：「關掉電源」</p>
+              <p>「打開電源」以開啟電源</p>
+              <p>「關掉電源」以關閉電源</p>
             </div>
             <div id='final' className="final"></div>
           </header>
-
           <MicIcon fontSize="large" style={{position:"absolute", color:this.state.microphone, top:10, right:10}}/>
-
-
         </div>
 
     )
