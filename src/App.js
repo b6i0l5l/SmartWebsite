@@ -8,7 +8,7 @@ import './App.css';
 //------------------------SPEECH RECOGNITION-----------------------------
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-const recognition = new SpeechRecognition()
+const recognition = new SpeechRecognition();
 
 recognition.continous = true
 recognition.interimResults = true
@@ -25,18 +25,49 @@ class Speech extends Component {
       listening: false,
       showlistening: "Power Off",
       microphone:"red",
-      bgcolor:'#282c34'
+      bgcolor:'#282c34',
+      time: new Date().toLocaleString(),
+      testbutton:"red"
     }
     this.toggleListen = this.toggleListen.bind(this)
     this.handleListen = this.handleListen.bind(this)
+    this.testbutton = this.testbutton.bind(this)
   }
 
+  componentDidMount() {
+    this.intervalID = setInterval(
+        () => this.tick(),
+        1000
+    );
+  }
   toggleListen() {
     this.setState({
       listening: !this.state.listening
     }, this.handleListen)
   }
 
+  componentWillUnmount() {
+    clearInterval(this.intervalID);
+  }
+
+  tick() {
+    this.setState({
+      time: new Date().toLocaleString()
+    });
+  }
+
+  testbutton() {
+    if (this.state.testbutton === "red"){
+      this.setState({
+        testbutton:"white"
+      })
+    }
+    else{
+      this.setState({
+        testbutton:"red"
+      })
+    }
+  }
   handleListen() {
 
     console.log('listening?', this.state.listening)
@@ -83,6 +114,8 @@ class Speech extends Component {
         })
         $.ajax({
           url:"https://maker.ifttt.com/trigger/ricecookeron/with/key/dyMeTmyKz4_uQNNPyqZABx",
+          dataType: 'JSONP',
+          jsonpCallback: 'callback',
           data: {"value1":"rice cooker on"},
           success:function(result){alert(result)}
         })
@@ -95,6 +128,8 @@ class Speech extends Component {
         })
         $.ajax({
           url:"https://maker.ifttt.com/trigger/ricecookeroff/with/key/dyMeTmyKz4_uQNNPyqZABx",
+          dataType: 'JSONP',
+          jsonpCallback: 'callback',
           data: {"value1":"rice cooker off"},
           success:function(result){alert(result)}
         })
@@ -133,13 +168,23 @@ class Speech extends Component {
             <button id='microphone-btn' className="button" onClick={this.toggleListen}>
               <img src={logo} className="App-logo" alt="logo"/>
             </button>
+            <button style={{color: this.state.testbutton}} onClick={this.testbutton}>
+              Activate Lasers
+            </button>
             <div className='memo'>
               <p >你可以說:</p>
               <p>「打開電源」以開啟電源</p>
               <p>「關掉電源」以關閉電源</p>
             </div>
+            <div className = 'clock'>
+              <p>
+                現在時間是 {this.state.time}.
+              </p>
+            </div>
+
             <div id='final' className="final"></div>
           </header>
+
           <MicIcon fontSize="large" style={{position:"absolute", color:this.state.microphone, top:10, right:10}}/>
         </div>
 

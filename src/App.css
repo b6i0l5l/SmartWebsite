@@ -36,6 +36,16 @@
   color:white;
 }
 
+.clock{
+  position: absolute;
+  top:40px;
+  left:270px;
+  width: 300px;
+  height:200px;
+  padding: 10px;
+  color:white;
+}
+
 .button {
   background-color: transparent;
   border:0;
