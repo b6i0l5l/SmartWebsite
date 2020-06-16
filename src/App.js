@@ -7,9 +7,8 @@ import './App.css';
 
 //------------------------SPEECH RECOGNITION-----------------------------
 
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
 const recognition = new SpeechRecognition();
-
 recognition.continous = true
 recognition.interimResults = true
 recognition.lang = 'zh-TW'
@@ -169,7 +168,7 @@ class Speech extends Component {
               <img src={logo} className="App-logo" alt="logo"/>
             </button>
             <button style={{color: this.state.testbutton}} onClick={this.testbutton}>
-              Activate Lasers
+              Activate Test
             </button>
             <div className='memo'>
               <p >你可以說:</p>
