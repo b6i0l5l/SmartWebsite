@@ -30,7 +30,6 @@ class Speech extends Component {
     }
     this.toggleListen = this.toggleListen.bind(this)
     this.handleListen = this.handleListen.bind(this)
-    this.testbutton = this.testbutton.bind(this)
   }
 
   componentDidMount() {
@@ -55,18 +54,6 @@ class Speech extends Component {
     });
   }
 
-  testbutton() {
-    if (this.state.testbutton === "red"){
-      this.setState({
-        testbutton:"white"
-      })
-    }
-    else{
-      this.setState({
-        testbutton:"red"
-      })
-    }
-  }
   handleListen() {
 
     console.log('listening?', this.state.listening)
@@ -166,9 +153,6 @@ class Speech extends Component {
             <div id='listening' className='listening' style={{position: "absolute", top: 10, left: 10}}>{this.state.showlistening}</div>
             <button id='microphone-btn' className="button" onClick={this.toggleListen}>
               <img src={logo} className="App-logo" alt="logo"/>
-            </button>
-            <button style={{color: this.state.testbutton}} onClick={this.testbutton}>
-              Activate Test
             </button>
             <div className='memo'>
               <p >你可以說:</p>
