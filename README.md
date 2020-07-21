@@ -15,5 +15,5 @@ You will also see any lint errors in the console.
 
 ## Link
 
-http://do46n6q0c12yx.cloudfront.net
+http://d1speul0mzbrr5.cloudfront.net
 
