@@ -155,19 +155,16 @@ class Speech extends Component {
               <img src={logo} className="App-logo" alt="logo"/>
             </button>
             <div className='memo'>
-              <p >你可以說:</p>
-              <p>「打開電源」以開啟電源</p>
-              <p>「關掉電源」以關閉電源</p>
+              <p >點選React圖示開始講話</p>
+              <p>可向管理者索取聲控IoT命令</p>
             </div>
             <div className = 'clock'>
               <p>
                 現在時間是 {this.state.time}.
               </p>
             </div>
-
             <div id='final' className="final"></div>
           </header>
-
           <MicIcon fontSize="large" style={{position:"absolute", color:this.state.microphone, top:10, right:10}}/>
         </div>
 
