@@ -1,26 +1,43 @@
-import React, { useState } from 'react';
-
-
+import React, { useState , useEffect} from 'react';
+import CommandForm from './CommandForm.js';
+import get from './GetApi';
 
 const DropDownMenu = () => {
-  const [plugs] = useState([
+  const [devices] = useState([
     { label: "plug1", value: "plug1"},
     { label: "plug2", value: "plug2" },
     { label: "plug3", value: "plug3" }
   ]);
+  const [states, setState] = useState({
+    device:'plug1',
+    command:''
+  });
+
+  useEffect(async () => {
+    const getCommand = await get.getCommand(states['device']);
+    setState(states => ({ ...states, command:getCommand['command']}));
+}, []);
+  
+   const handleChange = async (e) => {
+    const getCommand = await get.getCommand(e.target.value);
+    setState(states => ({ ...states, device: getCommand['device'] ,command:getCommand['command']}))
+  }
+  
   return (
     <div>
       <p style={{fontSize:'28px'}}>The Device:</p>
-      <select style={{width:'500px', height:'50px', fontSize:'28px'}}>
-        {plugs.map(plug => (
+      <select style={{width:'500px', height:'50px', fontSize:'28px'}}
+       onChange={e => handleChange(e)}>
+        {devices.map(device => (
           <option
-            key={plug.value}
-            value={plug.value}
+            key={device.value}
+            value={device.value}
           >
-            {plug.label}
+            {device.value}
           </option>
         ))}
       </select>
+      <CommandForm value={states}></CommandForm>
     </div>
     
   );

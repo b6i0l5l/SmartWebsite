@@ -9,7 +9,6 @@ const FindDevices = () => {
      <div style={{ color:'white', minHeight: '100vh', backgroundColor:'#282c34', display:'flex', flexDirection: 'column',
      alignItems: 'center', justifyContent: 'center'}}>
        <DropDownMenu></DropDownMenu>
-       <CommandForm></CommandForm>
      </div>
     );
 }
