@@ -1,6 +1,6 @@
 import React, { useState , useEffect} from 'react';
 import CommandForm from './CommandForm.js';
-import get from './GetApi';
+import GetApi from './GetApi';
 
 const DropDownMenu = () => {
   const [devices] = useState([
@@ -14,12 +14,12 @@ const DropDownMenu = () => {
   });
 
   useEffect(async () => {
-    const getCommand = await get.getCommand(states['device']);
+    const getCommand = await GetApi.getCommand(states['device']);
     setState(states => ({ ...states, command:getCommand['command']}));
 }, []);
   
    const handleChange = async (e) => {
-    const getCommand = await get.getCommand(e.target.value);
+    const getCommand = await GetApi.getCommand(e.target.value);
     setState(states => ({ ...states, device: getCommand['device'] ,command:getCommand['command']}))
   }
   

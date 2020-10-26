@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import MicIcon from '@material-ui/icons/Mic';
-import logo from './Components/logo.svg';
+import logo from './logo.svg';
 import './Core.css';
 import $ from 'jquery';
 import Init from './CoreInit.js';
