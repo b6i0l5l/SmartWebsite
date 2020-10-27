@@ -6,6 +6,9 @@ import $ from 'jquery';
 import Init from './CoreInit.js';
 import Instruction from './Instruction.js';
 import Clock from './Clock.js';
+import {Link} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+
 
 //------------------------SPEECH RECOGNITION-----------------------------
 
@@ -116,20 +119,21 @@ const Speech = () => {
 
   }
 
+  const history = useHistory();
 
+  const handleClick = () => {
+      history.push("/finddevices");
+  }
     return (
         <div>
           <header className="App-header" style={{backgroundColor: bgcolor}}>
-            <div id='listening' className='listening' style={{position: "absolute", top: 10, left: 10}}>{showlistening}</div>
+            <Clock></Clock>
+            <div>Click React to speak</div>
+            
+            <button style={{position: "absolute", top: 10, left: 10}} onClick={handleClick}>update commands</button>
             <button id='microphone-btn' className="button" onClick={toggleListen}>
               <img src={logo} className="App-logo" alt="logo"/>
             </button>
-            <div className='memo'>
-              <Instruction></Instruction>
-            </div>
-            <div className = 'clock'>
-              <Clock></Clock>
-            </div>
             <div id='final' className="final"></div>
           </header>
           <MicIcon fontSize="large" style={{position:"absolute", color:microphone, top:10, right:10}}/>

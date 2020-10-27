@@ -10,14 +10,13 @@ const Clock = () => {
       clearInterval(timerID);
     };
  });
-
    function tick() {
     setDate(new Date());
    }
-
+   
    return (
       <div>
-        <p>Now, it is {date.toLocaleTimeString()}.</p>
+        <p>{date.toLocaleTimeString()}</p>
       </div>
     );
 }
