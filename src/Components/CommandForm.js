@@ -3,17 +3,20 @@ import {useForm} from 'react-hook-form';
 import requestOptions from './RequestOptions';
 import {Link ,useHistory } from "react-router-dom";
 import post from './PostApi';
+import { useLocation } from "react-router-dom";
 
 const CommandForm = (props) => {
   const {register, handleSubmit} = useForm();
   let history = useHistory();
-
+  
   const onSubmit = (newCommand) => {
   const requestdata = requestOptions.rquest(props['value']['device'],newCommand['command']);
   post.updateCommand(requestdata);
   }
+
+  const location = useLocation();
   const goBackToCore = () =>{
-    history.push('/core');
+    history.push('/core',location.state);
   }
   return (
     <div>

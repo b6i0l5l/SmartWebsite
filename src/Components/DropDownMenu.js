@@ -1,8 +1,9 @@
 import React, { useState , useEffect} from 'react';
 import CommandForm from './CommandForm.js';
 import GetApi from './GetApi';
+import {useLocation} from 'react-router-dom';
 
-const DropDownMenu = (props) => {
+const DropDownMenu = () => {
   const [devices] = useState([
     { label: "plug1", value: "plug1"},
     { label: "plug2", value: "plug2" },
@@ -10,20 +11,22 @@ const DropDownMenu = (props) => {
   ]);
   const [states, setState] = useState({
     device:'plug1',
-    command:''
+    command:'',
+    username:''
   });
 
+  const location = useLocation();
+  
   useEffect(() => {
-    console.log(props);
     async function fectchCommand(){
-      const getCommand = await GetApi.getCommand(props['value']['username'], states['device']);
-      setState(states => ({ ...states, command:getCommand['command']}));
+      const getCommand = await GetApi.getCommand(location.state['username'], states['device']);
+      setState(states => ({ ...states, username:location.state['username'], command:getCommand['command']}));
     }
     fectchCommand();
 }, []);
   
    const handleChange = async (e) => {
-    const getCommand = await GetApi.getCommand(props['value']['username'], e.target.value);
+    const getCommand = await GetApi.getCommand(location.state['username'], e.target.value);
     setState(states => ({ ...states, device: getCommand['device'] ,command:getCommand['command']}))
   }
   

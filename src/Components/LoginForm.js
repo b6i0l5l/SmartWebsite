@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import {useForm} from 'react-hook-form';
 import GetApi from './GetApi.js';
 import Core from './Core.js';
+import {useHistory} from 'react-router-dom';
 
 const LoginForm = () => {
   const {register, handleSubmit} = useForm();
   const [states, setState] = useState({
     authentic:false,
-    userName:''
+    username:''
   });
 
   const onSubmit = async (user) => {
@@ -15,12 +16,13 @@ const LoginForm = () => {
   setState(states => ({
     ...states, 
     authentic: authenticInfo['success'],
-    userName: authenticInfo['username']
+    username: authenticInfo['username']
   }));
 
   }
+  const history = useHistory();
   if(states['authentic']){
-    return (<Core value={states}></Core>);
+    history.push(("/core"), states);
   }
 
   return (

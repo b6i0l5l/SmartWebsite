@@ -5,7 +5,7 @@ import './Core.css';
 import $ from 'jquery';
 import Init from './CoreInit.js';
 import Clock from './Clock.js';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation} from 'react-router-dom';
 
 
 //------------------------SPEECH RECOGNITION-----------------------------
@@ -19,12 +19,17 @@ recognition.lang = 'zh-TW'
 
 //------------------------COMPONENT-----------------------------
 
-const Speech = (props) => {
-  const [{listening, username, showlistening,
+const Speech = () => {
+  const [{listening, showlistening,
     microphone, bgcolor}, setState] = useState(Init);
-
+  
+  const [states, setPassState] = useState({
+    username:''
+  });
+  const location = useLocation();
   useEffect (() => {
-    setState(states =>({...states, username: props['value']['userName']}));
+    // console.log(location);
+    setPassState(states =>({...states, username: location.state['username']}));
   }, [])
   
   const toggleListen = () => {
@@ -113,7 +118,9 @@ const Speech = (props) => {
 
   const history = useHistory();
   const handleClick = () => {
-      history.push(("/finddevices"),username);
+    // console.log("This is the lcoation state: ", location.state)
+    // console.log("This is the states: ", states)
+    history.push(("/finddevices"), location.state);
   }
     return (
         <div>
