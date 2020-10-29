@@ -2,7 +2,7 @@ import React, { useState , useEffect} from 'react';
 import CommandForm from './CommandForm.js';
 import GetApi from './GetApi';
 
-const DropDownMenu = () => {
+const DropDownMenu = (props) => {
   const [devices] = useState([
     { label: "plug1", value: "plug1"},
     { label: "plug2", value: "plug2" },
@@ -14,15 +14,16 @@ const DropDownMenu = () => {
   });
 
   useEffect(() => {
+    console.log(props);
     async function fectchCommand(){
-      const getCommand = await GetApi.getCommand(states['device']);
+      const getCommand = await GetApi.getCommand(props['value']['username'], states['device']);
       setState(states => ({ ...states, command:getCommand['command']}));
     }
     fectchCommand();
 }, []);
   
    const handleChange = async (e) => {
-    const getCommand = await GetApi.getCommand(e.target.value);
+    const getCommand = await GetApi.getCommand(props['value']['username'], e.target.value);
     setState(states => ({ ...states, device: getCommand['device'] ,command:getCommand['command']}))
   }
   

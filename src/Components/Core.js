@@ -19,19 +19,13 @@ recognition.lang = 'zh-TW'
 
 //------------------------COMPONENT-----------------------------
 
-const Speech = () => {
-  const [{listening, showlistening,
+const Speech = (props) => {
+  const [{listening, username, showlistening,
     microphone, bgcolor}, setState] = useState(Init);
 
-  // useEffect (() => {
-  //   // fetch('http://127.0.0.1:8000/api/language')
-  //   // .then(res => res.json())
-  //   // .then(
-  //   //   (result) => {
-  //   //     console.log(result[0]['content']);
-  //   //   }
-  //   // );
-  // }, [])
+  useEffect (() => {
+    setState(states =>({...states, username: props['value']['userName']}));
+  }, [])
   
   const toggleListen = () => {
     setState(state => ({ ...state, listening: !listening}));
@@ -119,7 +113,7 @@ const Speech = () => {
 
   const history = useHistory();
   const handleClick = () => {
-      history.push("/finddevices");
+      history.push(("/finddevices"),username);
   }
     return (
         <div>

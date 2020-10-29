@@ -4,5 +4,6 @@ export default {
   microphone:"red",
   bgcolor:'#282c34',
   time: new Date().toLocaleString(),
-  testbutton:"red"
+  testbutton:"red",
+  username:''
 }
