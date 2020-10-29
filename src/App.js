@@ -10,11 +10,9 @@ const App = () => {
      <Router>
        <div style={{ color:'white', minHeight: '100vh', backgroundColor:'#282c34', display:'flex', flexDirection: 'column',
           alignItems: 'center', justifyContent: 'center'}}>
-        <Switch>
-          <Route path='/' exact component={LoginForm}></Route>
-          <Route path="/core" exact component={Core}></Route>
-          <Route path='/finddevices' exact component={FindDevices}></Route>
-        </Switch>
+        <Route path='/' exact component={LoginForm}></Route>
+        <Route path='/finddevices' exact component={FindDevices}></Route>
+        <Route path="/core" exact component={Core}></Route>
       </div>
      </Router> 
     );

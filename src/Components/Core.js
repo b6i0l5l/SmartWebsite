@@ -4,9 +4,7 @@ import logo from './logo.svg';
 import './Core.css';
 import $ from 'jquery';
 import Init from './CoreInit.js';
-import Instruction from './Instruction.js';
 import Clock from './Clock.js';
-import {Link} from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
 
@@ -16,7 +14,7 @@ const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecogni
 const recognition = new SpeechRecognition();
 recognition.continous = true
 recognition.interimResults = true
-recognition.lang = 'en-US'
+recognition.lang = 'zh-TW'
 
 
 //------------------------COMPONENT-----------------------------
@@ -25,15 +23,15 @@ const Speech = () => {
   const [{listening, showlistening,
     microphone, bgcolor}, setState] = useState(Init);
 
-  useEffect (() => {
-    // fetch('http://127.0.0.1:8000/api/language')
-    // .then(res => res.json())
-    // .then(
-    //   (result) => {
-    //     console.log(result[0]['content']);
-    //   }
-    // );
-  }, [])
+  // useEffect (() => {
+  //   // fetch('http://127.0.0.1:8000/api/language')
+  //   // .then(res => res.json())
+  //   // .then(
+  //   //   (result) => {
+  //   //     console.log(result[0]['content']);
+  //   //   }
+  //   // );
+  // }, [])
   
   const toggleListen = () => {
     setState(state => ({ ...state, listening: !listening}));
@@ -120,7 +118,6 @@ const Speech = () => {
   }
 
   const history = useHistory();
-
   const handleClick = () => {
       history.push("/finddevices");
   }

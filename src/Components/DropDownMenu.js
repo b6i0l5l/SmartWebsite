@@ -13,9 +13,12 @@ const DropDownMenu = () => {
     command:''
   });
 
-  useEffect(async () => {
-    const getCommand = await GetApi.getCommand(states['device']);
-    setState(states => ({ ...states, command:getCommand['command']}));
+  useEffect(() => {
+    async function fectchCommand(){
+      const getCommand = await GetApi.getCommand(states['device']);
+      setState(states => ({ ...states, command:getCommand['command']}));
+    }
+    fectchCommand();
 }, []);
   
    const handleChange = async (e) => {

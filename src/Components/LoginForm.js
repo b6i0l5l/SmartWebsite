@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {useForm} from 'react-hook-form';
 import GetApi from './GetApi.js';
-import Core from './Core.js';
+import { useHistory } from 'react-router-dom';
 
 const LoginForm = () => {
   const {register, handleSubmit} = useForm();
@@ -19,8 +19,9 @@ const LoginForm = () => {
   }));
   }
 
-  if(states['authentic']){
-    return (<Core value={states}></Core>);
+  const history = useHistory();
+  const goToCore = () => {
+    history.push("/core");
   }
 
   return (
@@ -31,7 +32,7 @@ const LoginForm = () => {
         <label style={{color:'white', paddingBottom:'22px',paddingTop:'22px'}}>Password: </label>
         <input style={{height:'50px', fontSize:'28px'}} ref={register} name="password" defaultValue={''}></input>
         <br></br>
-        <button style={{height:'50px', backgroundColor:'#61dafb', fontSize:'28px'}}>Login</button>
+        <button style={{height:'50px', backgroundColor:'#61dafb', fontSize:'28px'}} onClick={goToCore}>Login</button>
       </form>
     </div>
   );
