@@ -5,6 +5,7 @@ import './Core.css';
 import $ from 'jquery';
 import Init from './CoreInit.js';
 import Clock from './Clock.js';
+import GetApi from './GetApi.js';
 import { useHistory, useLocation} from 'react-router-dom';
 
 
@@ -14,7 +15,7 @@ const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecogni
 const recognition = new SpeechRecognition();
 recognition.continous = true
 recognition.interimResults = true
-recognition.lang = 'zh-TW'
+recognition.lang = 'en-US'
 
 
 //------------------------COMPONENT-----------------------------
@@ -27,9 +28,10 @@ const Speech = () => {
     username:''
   });
   const location = useLocation();
-  useEffect (() => {
-    // console.log(location);
+  useEffect (async () => {
+    console.log(location);
     setPassState(states =>({...states, username: location.state['username']}));
+    const getCommandsByUser = await GetApi.getCommandsByUser(location.state['username']);
   }, [])
   
   const toggleListen = () => {
@@ -68,7 +70,7 @@ const Speech = () => {
         if (event.results[i].isFinal) intermiTranscript += transcript + ' ';
         else finalTranscript += transcript;
       }
-      if (finalTranscript === "打開電源"){
+      if (finalTranscript === "turn on power"){
         console.log("指令成功！")
         setState(state => ({ ...state, bgcolor:'#006400', showlistening:"Power On"}));
         $.ajax({
@@ -79,7 +81,7 @@ const Speech = () => {
           success:function(result){alert(result)}
         })
       }
-      else if(finalTranscript === "關掉電源"){
+      else if(finalTranscript === "turn off power"){
         console.log("指令成功！")
         setState(state => ({ ...state, bgcolor:'#006400', showlistening:"Power Off"}));
         $.ajax({

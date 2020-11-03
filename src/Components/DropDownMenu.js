@@ -19,15 +19,15 @@ const DropDownMenu = () => {
   
   useEffect(() => {
     async function fectchCommand(){
-      const getCommand = await GetApi.getCommand(location.state['username'], states['device']);
-      setState(states => ({ ...states, username:location.state['username'], command:getCommand['command']}));
+      const getCommandByDeviceID = await GetApi.getCommandByDeviceID(location.state['username'], states['device']);
+      setState(states => ({ ...states, username:location.state['username'], command:getCommandByDeviceID['command']}));
     }
     fectchCommand();
 }, []);
   
    const handleChange = async (e) => {
-    const getCommand = await GetApi.getCommand(location.state['username'], e.target.value);
-    setState(states => ({ ...states, device: getCommand['device'] ,command:getCommand['command']}))
+    const getCommandByDeviceID = await GetApi.getCommandByDeviceID(location.state['username'], e.target.value);
+    setState(states => ({ ...states, device: getCommandByDeviceID['device'] ,command:getCommandByDeviceID['command']}))
   }
   
   return (
