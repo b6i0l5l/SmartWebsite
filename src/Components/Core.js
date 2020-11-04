@@ -22,16 +22,16 @@ recognition.lang = 'en-US'
 
 const Speech = () => {
   const [{listening, showlistening,
-    microphone, bgcolor}, setState] = useState(Init);
+    microphone, bgcolor, usercommands}, setState] = useState(Init);
   
   const [states, setPassState] = useState({
     username:''
   });
   const location = useLocation();
   useEffect (async () => {
-    console.log(location);
-    setPassState(states =>({...states, username: location.state['username']}));
     const getCommandsByUser = await GetApi.getCommandsByUser(location.state['username']);
+    setPassState(states =>({...states, username: location.state['username']}));
+    setState(states => ({...states, usercommands:getCommandsByUser}));
   }, [])
   
   const toggleListen = () => {
@@ -70,28 +70,35 @@ const Speech = () => {
         if (event.results[i].isFinal) intermiTranscript += transcript + ' ';
         else finalTranscript += transcript;
       }
-      if (finalTranscript === "turn on power"){
-        console.log("指令成功！")
-        setState(state => ({ ...state, bgcolor:'#006400', showlistening:"Power On"}));
-        $.ajax({
-          url:"https://maker.ifttt.com/trigger/ricecookeron/with/key/dyMeTmyKz4_uQNNPyqZABx",
-          dataType: 'JSONP',
-          jsonpCallback: 'callback',
-          data: {"value1":"rice cooker on"},
-          success:function(result){alert(result)}
-        })
+      for (let i = 0; i < usercommands.length; i++){
+        if (finalTranscript === usercommands[i]){
+          console.log("command success!")
+          setState(state => ({ ...state, bgcolor:'#006400', showlistening:"Power On"}));
+        }
       }
-      else if(finalTranscript === "turn off power"){
-        console.log("指令成功！")
-        setState(state => ({ ...state, bgcolor:'#006400', showlistening:"Power Off"}));
-        $.ajax({
-          url:"https://maker.ifttt.com/trigger/ricecookeroff/with/key/dyMeTmyKz4_uQNNPyqZABx",
-          dataType: 'JSONP',
-          jsonpCallback: 'callback',
-          data: {"value1":"rice cooker off"},
-          success:function(result){alert(result)}
-        })
-      }
+      // if (finalTranscript === "turn on power"){
+      //   console.log(usercommands[0]);
+      //   console.log("command success!")
+      //   setState(state => ({ ...state, bgcolor:'#006400', showlistening:"Power On"}));
+        // $.ajax({
+        //   url:"https://maker.ifttt.com/trigger/ricecookeron/with/key/dyMeTmyKz4_uQNNPyqZABx",
+        //   dataType: 'JSONP',
+        //   jsonpCallback: 'callback',
+        //   data: {"value1":"rice cooker on"},
+        //   success:function(result){alert(result)}
+        // })
+      // }
+      // else if(finalTranscript === "turn off power"){
+      //   console.log("command success!")
+      //   setState(state => ({ ...state, bgcolor:'#006400', showlistening:"Power Off"}));
+      //   $.ajax({
+      //     url:"https://maker.ifttt.com/trigger/ricecookeroff/with/key/dyMeTmyKz4_uQNNPyqZABx",
+      //     dataType: 'JSONP',
+      //     jsonpCallback: 'callback',
+      //     data: {"value1":"rice cooker off"},
+      //     success:function(result){alert(result)}
+      //   })
+      // }
       document.getElementById('final').innerHTML = finalTranscript
 
       //-------------------------COMMANDS------------------------------------

@@ -5,5 +5,6 @@ export default {
   bgcolor:'#282c34',
   time: new Date().toLocaleString(),
   testbutton:"red",
-  username:''
+  username:'',
+  usercommands:[]
 }
