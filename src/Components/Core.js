@@ -28,12 +28,15 @@ const Speech = () => {
     username:''
   });
   const location = useLocation();
-  useEffect (async () => {
-    const getCommandsByUser = await GetApi.getCommandsByUser(location.state['username']);
-    setPassState(states =>({...states, username: location.state['username']}));
-    setState(states => ({...states, usercommands:getCommandsByUser}));
+
+  useEffect (() => {
+    async function getCommandsByUser(){
+      const getCommands = await GetApi.getCommandsByUser(location.state['username']);
+      setState(states => ({...states, usercommands: getCommands}));
+      setPassState(states =>({...states, username: location.state['username']}));
+    }
+    getCommandsByUser();
   }, [])
-  
   const toggleListen = () => {
     setState(state => ({ ...state, listening: !listening}));
     console.log(listening);
@@ -74,6 +77,9 @@ const Speech = () => {
         if (finalTranscript === usercommands[i]){
           console.log("command success!")
           setState(state => ({ ...state, bgcolor:'#006400', showlistening:"Power On"}));
+        }
+        else{
+          console.log('no command');
         }
       }
       // if (finalTranscript === "turn on power"){
@@ -127,8 +133,6 @@ const Speech = () => {
 
   const history = useHistory();
   const handleClick = () => {
-    // console.log("This is the lcoation state: ", location.state)
-    // console.log("This is the states: ", states)
     history.push(("/finddevices"), location.state);
   }
     return (
