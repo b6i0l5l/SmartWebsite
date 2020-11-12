@@ -6,23 +6,14 @@ import {useHistory} from 'react-router-dom';
 
 const LoginForm = () => {
   const {register, handleSubmit} = useForm();
-  const [states, setState] = useState({
-    authentic:false,
-    username:''
-  });
-
+  const history = useHistory();
+  
   const onSubmit = async (user) => {
     const authenticInfo = await GetApi.checkUserAccount(user);
-  setState(states => ({
-    ...states, 
-    authentic: authenticInfo['success'],
-    username: authenticInfo['username']
-  }));
-
-  }
-  const history = useHistory();
-  if(states['authentic']){
-    history.push(("/core"), states);
+    if(authenticInfo['success']){
+      history.push(("/core"), authenticInfo);
+    }
+    
   }
 
   return (
