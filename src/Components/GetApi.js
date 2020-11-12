@@ -15,6 +15,12 @@ export default{
     let data = await res.json();
     console.log(data);
     return data;
+  },
+  async getCommandsAndDevicesByUser(user){
+    let res = await fetch('http://127.0.0.1:8000/api/getdevicesinfos/'+user)
+    let data = await res.json();
+    console.log(data);
+    return data;
   }
 
 }
