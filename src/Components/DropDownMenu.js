@@ -2,7 +2,6 @@ import React, { useState , useEffect} from 'react';
 import CommandForm from './CommandForm.js';
 import GetApi from './GetApi';
 import {useLocation} from 'react-router-dom';
-import DeviceForm from './DeviceForm.js';
 
 const DropDownMenu = () => {
   const [devices, setDeviceState] = useState([]);

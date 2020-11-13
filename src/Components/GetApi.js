@@ -21,6 +21,12 @@ export default{
     let data = await res.json();
     console.log(data);
     return data;
+  },
+  async getTriggerByCommand(device){
+    let res = await fetch('http://127.0.0.1:8000/api/gettrigger/'+device)
+    let data = await res.json();
+    console.log(data);
+    return data;
   }
 
 }

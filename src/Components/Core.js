@@ -22,7 +22,7 @@ recognition.lang = 'en-US'
 
 const Speech = () => {
   const [{listening, showlistening,
-    microphone, bgcolor, usercommands}, setState] = useState(Init);
+    microphone, bgcolor, commandsAndDevices}, setState] = useState(Init);
   
   const [states, setPassState] = useState({
     username:''
@@ -30,12 +30,12 @@ const Speech = () => {
   const location = useLocation();
 
   useEffect (() => {
-    async function getCommandsByUser(){
-      const getCommands = await GetApi.getCommandsByUser(location.state['username']);
-      setState(states => ({...states, usercommands: getCommands}));
+    async function getCommandsAndDevicesByUser(){
+      const CommandsAndDevices = await GetApi.getCommandsAndDevicesByUser(location.state['username']);
+      setState(states => ({...states, commandsAndDevices: CommandsAndDevices}));
       setPassState(states =>({...states, username: location.state['username']}));
     }
-    getCommandsByUser();
+    getCommandsAndDevicesByUser();
   }, [])
   const toggleListen = () => {
     setState(state => ({ ...state, listening: !listening}));
@@ -43,6 +43,10 @@ const Speech = () => {
     handleListen();
   }
 
+  const triggerDevice = async (device) => {
+    const status = await GetApi.getTriggerByCommand(device);
+    console.log('This is the status:', status);
+  }
   const handleListen = () => {
     console.log('listening?', listening)
     if (listening) {
@@ -73,9 +77,11 @@ const Speech = () => {
         if (event.results[i].isFinal) intermiTranscript += transcript + ' ';
         else finalTranscript += transcript;
       }
-      for (let i = 0; i < usercommands.length; i++){
-        if (finalTranscript === usercommands[i]){
+      for (let i = 0; i < commandsAndDevices.length; i++){
+        if (finalTranscript === commandsAndDevices[i]['command']){
           console.log("command success!")
+          console.log(commandsAndDevices[i]['device']);
+          triggerDevice(commandsAndDevices[i]['device']);
           setState(state => ({ ...state, bgcolor:'#006400', showlistening:"Power On"}));
         }
         else{
@@ -135,6 +141,7 @@ const Speech = () => {
   const handleClick = () => {
     history.push(("/finddevices"), location.state);
   }
+
     return (
         <div>
           <header className="App-header" style={{backgroundColor: bgcolor}}>
