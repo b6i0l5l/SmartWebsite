@@ -2,33 +2,37 @@ import React, { useState , useEffect} from 'react';
 import CommandForm from './CommandForm.js';
 import GetApi from './GetApi';
 import {useLocation} from 'react-router-dom';
+import DeviceForm from './DeviceForm.js';
 
 const DropDownMenu = () => {
-  const [devices] = useState([
-    { label: "plug1", value: "plug1"},
-    { label: "plug2", value: "plug2" },
-    { label: "plug3", value: "plug3" }
-  ]);
+  const [devices, setDeviceState] = useState([]);
+  const location = useLocation();
+  
   const [states, setState] = useState({
-    device:'plug1',
+    device:'plug1-on',
     command:'',
     username:''
   });
 
-  const location = useLocation();
-  
   useEffect(() => {
-    async function fectchCommand(){
+    async function fetchCommandsAndDevices(){
+      const getCommandByDeviceID = await GetApi.getCommandsAndDevicesByUser(location.state['username']);
+      setDeviceState(getCommandByDeviceID);
+      
+    }
+    async function fetchCommands(){
       const getCommandByDeviceID = await GetApi.getCommandByDeviceID(location.state['username'], states['device']);
+      console.log(getCommandByDeviceID);
       setState(states => ({ ...states, username:location.state['username'], command:getCommandByDeviceID['command']}));
     }
-    fectchCommand();
+    fetchCommandsAndDevices();
+    fetchCommands();
 }, []);
-  
-   const handleChange = async (e) => {
-    const getCommandByDeviceID = await GetApi.getCommandByDeviceID(location.state['username'], e.target.value);
-    setState(states => ({ ...states, device: getCommandByDeviceID['device'] ,command:getCommandByDeviceID['command']}))
-  }
+
+const handleChange = async (e) => {
+  const getCommandByDeviceID = await GetApi.getCommandByDeviceID(location.state['username'], e.target.value);
+  setState(states => ({ ...states, username:location.state['username'], device:getCommandByDeviceID['device'] ,command:getCommandByDeviceID['command']}))
+}
   
   return (
     <div>
@@ -37,10 +41,10 @@ const DropDownMenu = () => {
        onChange={e => handleChange(e)}>
         {devices.map(device => (
           <option
-            key={device.value}
-            value={device.value}
+            key={device['device']}
+            value={device['device']}
           >
-            {device.value}
+            {device['device']}
           </option>
         ))}
       </select>

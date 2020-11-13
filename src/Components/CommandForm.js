@@ -10,8 +10,8 @@ const CommandForm = (props) => {
   let history = useHistory();
   
   const onSubmit = (newCommand) => {
-  const requestdata = requestOptions.rquest(props['value']['device'],newCommand['command']);
-  post.updateCommand(requestdata);
+    const requestdata = requestOptions.rquest(props['value']['device'],newCommand['command']);
+    post.updateCommand(requestdata);
   }
 
   const location = useLocation();
