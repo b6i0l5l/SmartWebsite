@@ -1,17 +1,18 @@
 import React, { useEffect } from 'react';
 import {useForm} from 'react-hook-form';
 import requestOptions from './RequestOptions';
-import {Link ,useHistory } from "react-router-dom";
+import {useHistory } from "react-router-dom";
 import post from './PostApi';
 import { useLocation } from "react-router-dom";
+import './CommandForm.css';
 
 const CommandForm = (props) => {
   const {register, handleSubmit} = useForm();
   let history = useHistory();
   
-  const onSubmit = (newCommand) => {
-    const requestdata = requestOptions.rquest(props['value']['device'],newCommand['command']);
-    post.updateCommand(requestdata);
+  const onSubmit = async (newCommand) => {
+    const requestdata = requestOptions.rquest(props['value']['device'], newCommand['command']);
+    await post.updateCommand(requestdata);
   }
 
   const location = useLocation();
@@ -25,8 +26,8 @@ const CommandForm = (props) => {
         <input style={{height:'50px', fontSize:'28px'}} ref={register} name="command" defaultValue={props['value']['command']}></input>
         <br></br>
         <div style={{display:'flex', flexDirection:'row'}}>
-          <button style={{width:'250px', height:'50px', backgroundColor:'#61dafb', fontSize:'28px'}} onClick={goBackToCore}>go back</button>
-          <button style={{width:'250px', height:'50px', backgroundColor:'#61dafb', fontSize:'28px'}}>submit</button>
+          <button className='CommandFormButton' onClick={goBackToCore}>go back</button>
+          <button className='CommandFormButton'>submit</button>
         </div>
       </form>
     </div>
