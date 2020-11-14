@@ -2,18 +2,18 @@
   text-align: center;
 }
 
-.App-logo {
+.AppLogo {
   height: 40vmin;
   pointer-events: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
+  .AppLogo {
     animation: App-logo-spin infinite 20s linear;
   }
 }
 
-.App-header {
+.AppHeader {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -26,32 +26,13 @@
 .App-link {
   color: #61dafb;
 }
-.memo{
-  position: absolute;
-  top:40px;
-  right:70px;
-  width: 500px;
-  height:200px;
-  padding: 0px;
-  color:white;
-}
 
-.clock{
-  position: absolute;
-  top:40px;
-  left:270px;
-  width: 300px;
-  height:200px;
-  padding: 10px;
-  color:white;
-}
-
-.button {
+.CoreButton {
   background-color: transparent;
   border:0;
 }
 
-.final {
+.CoreFinalScript {
   color: white;
   border:0;
   padding: 1em;
@@ -60,12 +41,6 @@
   align-items: center;
   text-align: center;
   font-size: 50px;
-}
-
-.listening {
-  color: white;
-  border:10em;
-
 }
 
 @keyframes App-logo-spin {

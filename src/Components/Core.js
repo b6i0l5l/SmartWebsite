@@ -21,22 +21,18 @@ recognition.lang = 'en-US'
 //------------------------COMPONENT-----------------------------
 
 const Speech = () => {
-  const [{listening, showlistening,
-    microphone, bgcolor, commandsAndDevices}, setState] = useState(Init);
-  
-  const [states, setPassState] = useState({
-    username:''
-  });
+  const [{listening,microphone, bgcolor, commandsAndDevices}, setState] = useState(Init);
   const location = useLocation();
 
   useEffect (() => {
     async function getCommandsAndDevicesByUser(){
+      console.log(location.state);
       const CommandsAndDevices = await GetApi.getCommandsAndDevicesByUser(location.state['username']);
       setState(states => ({...states, commandsAndDevices: CommandsAndDevices}));
-      setPassState(states =>({...states, username: location.state['username']}));
     }
     getCommandsAndDevicesByUser();
   }, [])
+
   const toggleListen = () => {
     setState(state => ({ ...state, listening: !listening}));
     console.log(listening);
@@ -44,9 +40,9 @@ const Speech = () => {
   }
 
   const triggerDevice = async (device) => {
-    const status = await GetApi.getTriggerByCommand(device);
-    console.log('This is the status:', status);
+    await GetApi.getTriggerByCommand(device);
   }
+
   const handleListen = () => {
     console.log('listening?', listening)
     if (listening) {
@@ -70,17 +66,20 @@ const Speech = () => {
     }
 
     let intermiTranscript = ''
-    recognition.onresult = event => {
+    recognition.onresult = (event) => {
       let finalTranscript = ''
       for (let i = event.resultIndex; i < event.results.length; i++) {
         const transcript = event.results[i][0].transcript;
-        if (event.results[i].isFinal) intermiTranscript += transcript + ' ';
-        else finalTranscript += transcript;
+        if (event.results[i].isFinal) {
+          intermiTranscript += transcript + ' ';
+        }
+        else {
+          finalTranscript += transcript;
+        }
       }
       for (let i = 0; i < commandsAndDevices.length; i++){
         if (finalTranscript === commandsAndDevices[i]['command']){
           console.log("command success!")
-          console.log(commandsAndDevices[i]['device']);
           triggerDevice(commandsAndDevices[i]['device']);
           setState(state => ({ ...state, bgcolor:'#006400', showlistening:"Power On"}));
         }
@@ -139,20 +138,24 @@ const Speech = () => {
 
   const history = useHistory();
   const handleClick = () => {
-    history.push(("/finddevices"), location.state);
+    recognition.stop();
+    recognition.onend = () => {
+        setState(state => ({ ...state, microphone: 'red'}));
+        console.log("Stopped listening per click")
+      }
+    history.push(("/DevicesAndCommands"), location.state);
   }
 
     return (
         <div>
-          <header className="App-header" style={{backgroundColor: bgcolor}}>
+          <header className="AppHeader" style={{backgroundColor: bgcolor}}>
             <Clock></Clock>
             <div>Click React to speak</div>
-            
             <button style={{position: "absolute", top: 10, left: 10}} onClick={handleClick}>update commands</button>
-            <button id='microphone-btn' className="button" onClick={toggleListen}>
-              <img src={logo} className="App-logo" alt="logo"/>
+            <button id='microphone-btn' className="CoreButton" onClick={toggleListen}>
+              <img src={logo} className="AppLogo" alt="logo"/>
             </button>
-            <div id='final' className="final"></div>
+            <div id='final' className="CoreFinalScript"></div>
           </header>
           <MicIcon fontSize="large" style={{position:"absolute", color:microphone, top:10, right:10}}/>
         </div>
