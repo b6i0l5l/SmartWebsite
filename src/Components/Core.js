@@ -15,8 +15,11 @@ const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecogni
 const recognition = new SpeechRecognition();
 recognition.continous = true
 recognition.interimResults = true
-recognition.lang = 'en-US'
+recognition.lang = "en-US"
 
+//------------------------VOICE RECOGNITION-----------------------------
+
+const utterance = new SpeechSynthesisUtterance("roger that!");
 
 //------------------------COMPONENT-----------------------------
 
@@ -26,7 +29,6 @@ const Speech = () => {
 
   useEffect (() => {
     async function getCommandsAndDevicesByUser(){
-      console.log(location.state);
       const CommandsAndDevices = await GetApi.getCommandsAndDevicesByUser(location.state['username']);
       setState(states => ({...states, commandsAndDevices: CommandsAndDevices}));
     }
@@ -35,58 +37,52 @@ const Speech = () => {
 
   const toggleListen = () => {
     setState(state => ({ ...state, listening: !listening}));
-    console.log(listening);
     handleListen();
   }
 
-  const triggerDevice = async (device) => {
-    await GetApi.getTriggerByCommand(device);
+  const getDeviceBytriggerCommand = async (command) => {
+    for (let i = 0; i < commandsAndDevices.length; i++){
+      if (command === commandsAndDevices[i]["command"]){
+        await GetApi.getTriggerByCommand(commandsAndDevices[i]["device"]);
+        speechSynthesis.speak(utterance);
+      }
+      else{
+        console.log("no command");
+      }
+    }
   }
 
   const handleListen = () => {
-    console.log('listening?', listening)
     if (listening) {
+      setState(state => ({ ...state, microphone:"green"}));
       recognition.start()
       recognition.onend = () => {
-        console.log("...continue listening...")
         recognition.start()
       }
-
     } else {
       recognition.stop()
       recognition.onend = () => {
-        setState(state => ({ ...state, microphone: 'red'}));
-        console.log("Stopped listening per click")
+        setState(state => ({ ...state, microphone: "red"}));
       }
     }
 
-    recognition.onstart = () => {
-      console.log("Listening!")
-      setState(state => ({ ...state, bgcolor: '#282c34', microphone:"green"}));
-    }
-
-    let intermiTranscript = ''
     recognition.onresult = (event) => {
-      let finalTranscript = ''
-      for (let i = event.resultIndex; i < event.results.length; i++) {
-        const transcript = event.results[i][0].transcript;
-        if (event.results[i].isFinal) {
-          intermiTranscript += transcript + ' ';
-        }
-        else {
-          finalTranscript += transcript;
-        }
+      let finalTranscript = " ";
+      finalTranscript = event.results[0][0]["transcript"];
+      if (event.results[0].isFinal){
+        getDeviceBytriggerCommand(finalTranscript);
+        finalTranscript = " ";
       }
-      for (let i = 0; i < commandsAndDevices.length; i++){
-        if (finalTranscript === commandsAndDevices[i]['command']){
-          console.log("command success!")
-          triggerDevice(commandsAndDevices[i]['device']);
-          setState(state => ({ ...state, bgcolor:'#006400', showlistening:"Power On"}));
-        }
-        else{
-          console.log('no command');
-        }
-      }
+      // for (let i = 0; i < commandsAndDevices.length; i++){
+      //   if (finalTranscript === commandsAndDevices[i]['command']){
+      //     console.log("command success!")
+      //     triggerDevice(commandsAndDevices[i]['device']);
+      //     setState(state => ({ ...state, bgcolor:'#006400', showlistening:"Power On"}));
+      //   }
+      //   else{
+      //     console.log('no command');
+      //   }
+      // }
       // if (finalTranscript === "turn on power"){
       //   console.log(usercommands[0]);
       //   console.log("command success!")
@@ -110,39 +106,21 @@ const Speech = () => {
       //     success:function(result){alert(result)}
       //   })
       // }
-      document.getElementById('final').innerHTML = finalTranscript
-
-      //-------------------------COMMANDS------------------------------------
-
-      const transcriptArr = finalTranscript.split(' ')
-      const stopCmd = transcriptArr.slice(-3, -1)
-      console.log('stopCmd', stopCmd)
-
-      if (stopCmd[0] === 'stop' && stopCmd[1] === 'listening'){
-        recognition.stop()
-        recognition.onend = () => {
-          console.log('Stopped listening per command')
-          const finalText = transcriptArr.slice(0, -3).join(' ')
-          document.getElementById('final').innerHTML = finalText
-        }
-      }
+      document.getElementById("final").innerHTML = finalTranscript
     }
 
     //-----------------------------------------------------------------------
-
     recognition.onerror = event => {
       console.log("Error occurred in recognition: " + event.error)
     }
-
   }
 
   const history = useHistory();
   const handleClick = () => {
     recognition.stop();
     recognition.onend = () => {
-        setState(state => ({ ...state, microphone: 'red'}));
-        console.log("Stopped listening per click")
-      }
+        setState(state => ({ ...state, microphone: "red"}));
+    }
     history.push(("/DevicesAndCommands"), location.state);
   }
 
@@ -155,7 +133,7 @@ const Speech = () => {
             <button id='microphone-btn' className="CoreButton" onClick={toggleListen}>
               <img src={logo} className="AppLogo" alt="logo"/>
             </button>
-            <div id='final' className="CoreFinalScript"></div>
+            <div id="final" className="CoreFinalScript"></div>
           </header>
           <MicIcon fontSize="large" style={{position:"absolute", color:microphone, top:10, right:10}}/>
         </div>
@@ -163,7 +141,3 @@ const Speech = () => {
 }
 
 export default Speech
-
-
-
-
