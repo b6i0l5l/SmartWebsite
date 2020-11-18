@@ -29,11 +29,13 @@ const Speech = () => {
   const location = useLocation();
 
   useEffect (() => {
+    let unmounted = false;
     async function getCommandsAndDevicesByUser(){
       const CommandsAndDevices = await GetApi.getCommandsAndDevicesByUser(location.state['username']);
       setState(states => ({...states, commandsAndDevices: CommandsAndDevices}));
     }
     getCommandsAndDevicesByUser();
+    return () => { unmounted = true };
   }, [])
 
   const toggleListen = () => {
