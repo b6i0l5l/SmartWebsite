@@ -46,8 +46,11 @@ const Speech = () => {
   const getDeviceBytriggerCommand = async (command) => {
     for (let i = 0; i < commandsAndDevices.length; i++){
       if (command === commandsAndDevices[i]["command"]){
-        await GetApi.getTriggerByCommand(commandsAndDevices[i]["device"]);
+        await GetApi.getTriggerByCommand(commandsAndDevices[i]["action"]);
         speechSynthesis.speak(confirmCommand);
+      }
+      else{
+        console.log("no command");
       }
     }
   }
@@ -73,6 +76,7 @@ const Speech = () => {
         getDeviceBytriggerCommand(finalTranscript);
         finalTranscript = " ";
       }
+      
       // for (let i = 0; i < commandsAndDevices.length; i++){
       //   if (finalTranscript === commandsAndDevices[i]['command']){
       //     console.log("command success!")
