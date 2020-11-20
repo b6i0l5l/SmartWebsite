@@ -1,9 +1,9 @@
 export default {
-  rquest(device,data){
+  rquest(action,data){
       const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 'device': device, 'command': data })
+        body: JSON.stringify({ 'action': action, 'command': data })
       };
       return requestOptions;
   }

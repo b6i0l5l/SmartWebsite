@@ -11,7 +11,7 @@ const CommandForm = (props) => {
   let history = useHistory();
   
   const onSubmit = async (newCommand) => {
-    const requestdata = requestOptions.rquest(props['value']['device'], newCommand['command']);
+    const requestdata = requestOptions.rquest(props['value']['action'], newCommand['command']);
     await post.updateCommand(requestdata);
   }
 

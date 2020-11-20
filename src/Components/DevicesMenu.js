@@ -4,11 +4,11 @@ import GetApi from './GetApi';
 import {useLocation} from 'react-router-dom';
 
 const DropDownMenu = () => {
-  const [devices, setDeviceState] = useState([]);
+  const [actions, setDeviceState] = useState([]);
   const location = useLocation();
   
   const [states, setState] = useState({
-    device:'plug1-on',
+    action:'plug1-on',
     command:'',
     username:''
   });
@@ -24,8 +24,9 @@ const DropDownMenu = () => {
 }, []);
 
 const handleChange = async (e) => {
+  console.log(actions);
   const getCommandByDeviceID = await GetApi.getCommandByDeviceID(location.state['username'], e.target.value);
-  setState(states => ({ ...states, username:location.state['username'], device:getCommandByDeviceID['device'] ,command:getCommandByDeviceID['command']}))
+  setState(states => ({ ...states, username:location.state['username'], device:getCommandByDeviceID['action'] ,command:getCommandByDeviceID['command']}))
 }
   
   return (
@@ -33,12 +34,12 @@ const handleChange = async (e) => {
       <p style={{fontSize:'28px'}}>The Device:</p>
       <select style={{width:'500px', height:'50px', fontSize:'28px'}}
        onChange={e => handleChange(e)}>
-        {devices.map(device => (
+        {actions.map(action=> (
           <option
-            key={device['device']}
-            value={device['device']}
+            key={action['action']}
+            value={action['action']}
           >
-            {device['device']}
+            {action['action']}
           </option>
         ))}
       </select>
