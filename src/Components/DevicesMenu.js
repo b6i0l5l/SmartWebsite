@@ -24,9 +24,8 @@ const DropDownMenu = () => {
 }, []);
 
 const handleChange = async (e) => {
-  console.log(actions);
   const getCommandByDeviceID = await GetApi.getCommandByDeviceID(location.state['username'], e.target.value);
-  setState(states => ({ ...states, username:location.state['username'], device:getCommandByDeviceID['action'] ,command:getCommandByDeviceID['command']}))
+  setState(states => ({ ...states, username:location.state['username'], action:getCommandByDeviceID['action'] ,command:getCommandByDeviceID['command']}))
 }
   
   return (
