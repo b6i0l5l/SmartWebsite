@@ -74,42 +74,7 @@ const Speech = () => {
       finalTranscript = event.results[0][0]["transcript"];
       if (event.results[0].isFinal){
         getDeviceBytriggerCommand(finalTranscript);
-        finalTranscript = " ";
       }
-      
-      // for (let i = 0; i < commandsAndDevices.length; i++){
-      //   if (finalTranscript === commandsAndDevices[i]['command']){
-      //     console.log("command success!")
-      //     triggerDevice(commandsAndDevices[i]['device']);
-      //     setState(state => ({ ...state, bgcolor:'#006400', showlistening:"Power On"}));
-      //   }
-      //   else{
-      //     console.log('no command');
-      //   }
-      // }
-      // if (finalTranscript === "turn on power"){
-      //   console.log(usercommands[0]);
-      //   console.log("command success!")
-      //   setState(state => ({ ...state, bgcolor:'#006400', showlistening:"Power On"}));
-        // $.ajax({
-        //   url:"https://maker.ifttt.com/trigger/ricecookeron/with/key/dyMeTmyKz4_uQNNPyqZABx",
-        //   dataType: 'JSONP',
-        //   jsonpCallback: 'callback',
-        //   data: {"value1":"rice cooker on"},
-        //   success:function(result){alert(result)}
-        // })
-      // }
-      // else if(finalTranscript === "turn off power"){
-      //   console.log("command success!")
-      //   setState(state => ({ ...state, bgcolor:'#006400', showlistening:"Power Off"}));
-      //   $.ajax({
-      //     url:"https://maker.ifttt.com/trigger/ricecookeroff/with/key/dyMeTmyKz4_uQNNPyqZABx",
-      //     dataType: 'JSONP',
-      //     jsonpCallback: 'callback',
-      //     data: {"value1":"rice cooker off"},
-      //     success:function(result){alert(result)}
-      //   })
-      // }
       document.getElementById("final").innerHTML = finalTranscript
     }
 
