@@ -27,6 +27,12 @@ export default{
     // let data = await res.json();
     console.log(res);
     // return data;
+  },
+  async getTriggerByLevenshtein(command, username){
+    let res = await fetch('/gettrigger/levenshtein/'+command+'?username='+username)
+    // let data = await res.json();
+    console.log(res);
+    // return data;
   }
 
 }

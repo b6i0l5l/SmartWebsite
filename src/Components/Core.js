@@ -50,7 +50,7 @@ const Speech = () => {
         speechSynthesis.speak(confirmCommand);
       }
       else{
-        console.log("no command");
+        await GetApi.getTriggerByLevenshtein(command, location.state['username']);
       }
     }
   }
@@ -73,6 +73,7 @@ const Speech = () => {
       let finalTranscript = " ";
       finalTranscript = event.results[0][0]["transcript"];
       if (event.results[0].isFinal){
+        console.log(finalTranscript);
         getDeviceBytriggerCommand(finalTranscript);
       }
       document.getElementById("final").innerHTML = finalTranscript
